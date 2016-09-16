@@ -1,4 +1,4 @@
-FROM selenium/node-firefox:2.53.0
+FROM custom-node-firefox
 MAINTAINER Selenium <selenium-developers@googlegroups.com>
 
 USER root
@@ -9,13 +9,25 @@ USER root
 RUN apt-get update -qqy \
   && apt-get -qqy install \
     x11vnc \
-  && rm -rf /var/lib/apt/lists/* \
-  && mkdir -p ~/.vnc \
-  && x11vnc -storepasswd secret ~/.vnc/passwd
+  && rm -rf /var/lib/apt/lists/*
+
+USER seluser
+
+RUN mkdir -p ~/.vnc \
+&& x11vnc -storepasswd secret ~/.vnc/passwd
+
+USER root
+
+RUN sudo rm /etc/localtime
+RUN sudo ln -s /usr/share/zoneinfo/Europe/Warsaw /etc/localtime
+ENV TZ=Europe/Warsaw
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 #=================
 # Locale settings
 #=================
+ENV no_proxy localhost
+ENV HUB_ENV_no_proxy localhost
 ENV LANGUAGE en_US.UTF-8
 ENV LANG en_US.UTF-8
 RUN locale-gen en_US.UTF-8 \

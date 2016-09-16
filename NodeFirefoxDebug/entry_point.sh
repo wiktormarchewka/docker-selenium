@@ -57,8 +57,9 @@ do
   sleep 0.5
 done
 
-fluxbox -display $DISPLAY &
+# docker run -it -e no_proxy=localhost -e HUB_ENV_no_proxy=localhost --entrypoint /bin/bash --name debug -P -p 5901:5900 --link hub:hub custom-node-firefox-debug
+# fluxbox -display $DISPLAY &
 
-x11vnc -forever -usepw -shared -rfbport 5900 -display $DISPLAY &
+# x11vnc -forever -usepw -shared -rfbport 5900 -display $DISPLAY &
 
-wait $NODE_PID
+# wait $NODE_PID

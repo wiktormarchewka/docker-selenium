@@ -1,7 +1,12 @@
-FROM selenium/node-base:2.53.0
+FROM custom-node-base
 MAINTAINER Selenium <selenium-developers@googlegroups.com>
 
 USER root
+
+RUN sudo rm /etc/localtime
+RUN sudo ln -s /usr/share/zoneinfo/Europe/Warsaw /etc/localtime
+ENV TZ=Europe/Warsaw
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 #=========
 # Firefox
